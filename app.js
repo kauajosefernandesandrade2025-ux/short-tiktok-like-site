@@ -8,31 +8,10 @@ const DEFAULT_EFFECTS = {
 };
 
 const initialState = {
-  users: [
-    { id: 'u1', fullName: 'Ana Souza', username: 'ana', password: '123456', bio: 'Criando vídeos curtos e bons momentos.', avatar: 'A', followers: ['u2', 'u3', 'u4'], following: ['u2', 'u3'], likes: 1284 },
-    { id: 'u2', fullName: 'João Martins', username: 'joao', password: '123456', bio: 'Dicas de edição e lifestyle.', avatar: 'J', followers: ['u1', 'u4'], following: ['u1', 'u3'], likes: 920 },
-    { id: 'u3', fullName: 'Luna Reis', username: 'luna', password: '123456', bio: 'Viver mais rápido, filmar melhor.', avatar: 'L', followers: ['u1', 'u2'], following: ['u1', 'u2', 'u4'], likes: 1600 },
-    { id: 'u4', fullName: 'Pedro Costa', username: 'pedro', password: '123456', bio: 'Designer por paixão, criador por hábito.', avatar: 'P', followers: ['u1'], following: ['u1', 'u3'], likes: 740 }
-  ],
-  posts: [
-    { id: 'p1', userId: 'u2', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', caption: 'Dia perfeito de luz natural. #creator #shorts', likes: 245, comments: 14, effect: 'neon', createdAt: '2024-07-01T18:00:00.000Z', likedBy: ['u1'] },
-    { id: 'p2', userId: 'u1', src: 'https://www.w3schools.com/html/mov_bbb.mp4', caption: 'Bora criar conteúdo leve e bonito hoje.', likes: 310, comments: 18, effect: 'warm', createdAt: '2024-07-03T20:30:00.000Z', likedBy: ['u2', 'u3'] },
-    { id: 'p3', userId: 'u3', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm', caption: 'Cena simples mas linda para testar filtro.', likes: 420, comments: 24, effect: 'vintage', createdAt: '2024-07-04T09:10:00.000Z', likedBy: ['u1', 'u2', 'u4'] },
-    { id: 'p4', userId: 'u4', src: 'https://www.w3schools.com/html/movie.mp4', caption: 'Afinalando a ideia do novo projeto.', likes: 180, comments: 8, effect: 'bw', createdAt: '2024-07-05T15:45:00.000Z', likedBy: ['u3'] }
-  ],
-  followRequests: [
-    { id: 'r1', fromUserId: 'u4', toUserId: 'u1', status: 'pending' },
-    { id: 'r2', fromUserId: 'u3', toUserId: 'u1', status: 'pending' }
-  ],
-  chats: [
-    { id: 'c1', users: ['u1', 'u2'], messages: [
-      { id: 'm1', senderId: 'u2', text: 'Oi, posso te mandar uma ideia de vídeo?', time: '09:14' },
-      { id: 'm2', senderId: 'u1', text: 'Claro! Vamos trocar ideia.', time: '09:15' }
-    ] },
-    { id: 'c2', users: ['u1', 'u3'], messages: [
-      { id: 'm3', senderId: 'u3', text: 'Posso te seguir e trocar mensagens?', time: '11:24' }
-    ] }
-  ],
+  users: [],
+  posts: [],
+  followRequests: [],
+  chats: [],
   activeUserId: null,
   selectedChatUserId: null,
   currentView: 'feed'
@@ -298,6 +277,11 @@ function renderFeed() {
   }
 
   const visiblePosts = [...state.posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  if (!visiblePosts.length) {
+    feedList.innerHTML = '<div class="card empty-state-card"><p class="empty-state">Seu feed está vazio. Publique o primeiro vídeo para começar.</p></div>';
+    return;
+  }
+
   feedList.innerHTML = visiblePosts.map((post) => {
     const user = getUserById(post.userId);
     if (!user) return '';
