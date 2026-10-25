@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShortTik</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="auth-screen" class="screen active">
+      <div class="auth-shell">
+        <div class="brand-panel">
+          <div class="brand-bubble">S</div>
+          <div class="brand-copy">
+            <span class="tag">ShortTik</span>
+            <h1>Crie, curta e compartilhe vídeos curtos.</h1>
+            <p>Feed vertical com vídeos rápidos, seguidores, perfil, chat e efeitos de rosto.</p>
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <div class="auth-tabs">
+            <button class="tab-btn active" data-auth-tab="login">Entrar</button>
+            <button class="tab-btn" data-auth-tab="register">Cadastrar</button>
+          </div>
+
+          <form id="login-form" class="auth-form active">
+            <label>
+              Nome de usuário
+              <input type="text" id="login-name" placeholder="Seu nome" required />
+            </label>
+            <label>
+              Senha
+              <input type="password" id="login-password" placeholder="Sua senha" required />
+            </label>
+            <button type="submit" class="primary-btn">Entrar</button>
+          </form>
+
+          <form id="register-form" class="auth-form">
+            <label>
+              Nome completo
+              <input type="text" id="register-fullname" placeholder="Seu nome completo" required />
+            </label>
+            <label>
+              Nome de usuário
+              <input type="text" id="register-name" placeholder="Escolha um nome de usuário" maxlength="18" required />
+            </label>
+            <label>
+              Senha
+              <input type="password" id="register-password" placeholder="Crie uma senha" minlength="6" required />
+            </label>
+            <button type="submit" class="primary-btn">Criar conta</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="app-screen" class="screen hidden">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <span class="brand-mark">S</span>
+          <span class="brand-name">ShortTik</span>
+        </div>
+
+        <div class="header-search">
+          <span>🔍</span>
+          <input id="search-input" type="text" placeholder="Buscar pessoas" />
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-btn" title="Nova publicação">＋</button>
+          <button class="icon-btn" id="logout-btn" title="Sair">⇥</button>
+        </div>
+      </header>
+
+      <div class="app-layout">
+        <aside class="side-panel left-panel">
+          <div class="profile-mini card">
+            <div class="avatar gradient" id="mini-avatar">A</div>
+            <div>
+              <h3 id="mini-name">Usuário</h3>
+              <p id="mini-handle">@usuario</p>
+            </div>
+          </div>
+
+          <nav class="menu-list">
+            <button class="menu-btn active" data-view="feed">🏠 Início</button>
+            <button class="menu-btn" data-view="profile">👤 Perfil</button>
+            <button class="menu-btn" data-view="chat">💬 Chats</button>
+          </nav>
+
+          <div class="stats-panel card">
+            <div>
+              <strong id="stat-followers">0</strong>
+              <span>Seguidores</span>
+            </div>
+            <div>
+              <strong id="stat-following">0</strong>
+              <span>Seguindo</span>
+            </div>
+            <div>
+              <strong id="stat-likes">0</strong>
+              <span>Curtidas</span>
+            </div>
+          </div>
+        </aside>
+
+        <main class="content-panel">
+          <section id="feed-view" class="view active">
+            <div class="feed-toolbar card">
+              <div>
+                <p class="eyebrow">Descubra</p>
+                <h2>Para você</h2>
+              </div>
+              <button id="open-upload-btn" class="primary-btn small">+ Publicar</button>
+            </div>
+            <div id="feed-list" class="feed-list"></div>
+          </section>
+
+          <section id="profile-view" class="view">
+            <div class="profile-banner card">
+              <div class="profile-header-row">
+                <div class="avatar large gradient" id="profile-avatar">A</div>
+                <div class="profile-meta">
+                  <h2 id="profile-name">Usuário</h2>
+                  <p id="profile-handle">@usuario</p>
+                  <span id="profile-bio">Bio do usuário</span>
+                </div>
+                <button id="camera-open-btn" class="primary-btn">Gravar</button>
+              </div>
+
+              <div class="profile-stats-row">
+                <div><strong id="profile-posts-count">0</strong><span>Posts</span></div>
+                <div><strong id="profile-followers-count">0</strong><span>Seguidores</span></div>
+                <div><strong id="profile-following-count">0</strong><span>Seguindo</span></div>
+                <div><strong id="profile-likes-count">0</strong><span>Curtidas</span></div>
+              </div>
+            </div>
+            <div id="profile-posts" class="profile-posts"></div>
+          </section>
+
+          <section id="chat-view" class="view">
+            <div class="chat-layout card">
+              <aside id="chat-sidebar" class="chat-sidebar"></aside>
+              <div id="chat-window" class="chat-window"></div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="side-panel right-panel">
+          <div class="card suggestions-card">
+            <div class="card-head">
+              <h3>Pessoas</h3>
+              <span id="suggestion-count">0</span>
+            </div>
+            <div id="suggestions-list" class="list-stack"></div>
+          </div>
+
+          <div class="card requests-card">
+            <div class="card-head">
+              <h3>Solicitações</h3>
+              <span id="request-count">0</span>
+            </div>
+            <div id="requests-list" class="list-stack"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div id="upload-modal" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Publicar vídeo curto</h3>
+          <button class="close-btn" data-close="upload-modal">×</button>
+        </div>
+        <div class="modal-body">
+          <input type="file" id="upload-input" accept="video/*,image/*" />
+          <div class="preview-box">
+            <video id="upload-preview" class="media-preview hidden" controls playsinline></video>
+            <img id="upload-image-preview" class="media-preview hidden" alt="preview" />
+          </div>
+          <label>
+            Legenda
+            <textarea id="post-caption" rows="3" placeholder="Escreva algo envolvente..."></textarea>
+          </label>
+          <label>
+            Efeito
+            <select id="effect-select">
+              <option value="none">Normal</option>
+              <option value="neon">Neon</option>
+              <option value="vintage">Vintage</option>
+              <option value="bw">Preto e branco</option>
+              <option value="warm">Quente</option>
+            </select>
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary-btn" data-close="upload-modal">Cancelar</button>
+          <button id="submit-post-btn" class="primary-btn">Publicar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="camera-modal" class="modal hidden">
+      <div class="modal-card large">
+        <div class="modal-header">
+          <h3>Camera / efeito de rosto</h3>
+          <button class="close-btn" data-close="camera-modal">×</button>
+        </div>
+        <div class="modal-body camera-body">
+          <div class="camera-stage">
+            <video id="camera-preview" autoplay playsinline muted></video>
+            <div class="face-overlay">
+              <span class="glow glow-1"></span>
+              <span class="glow glow-2"></span>
+            </div>
+          </div>
+          <div class="camera-controls">
+            <select id="camera-effect-select">
+              <option value="none">Normal</option>
+              <option value="neon">Neon</option>
+              <option value="vintage">Vintage</option>
+              <option value="bw">B/N</option>
+              <option value="warm">Quente</option>
+            </select>
+            <button id="camera-start-btn" class="primary-btn">Ativar câmera</button>
+            <button id="camera-capture-btn" class="secondary-btn">Capturar</button>
+            <button id="camera-record-btn" class="secondary-btn">Gravar 3s</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
